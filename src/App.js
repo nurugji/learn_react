@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
@@ -11,6 +11,8 @@ function App() {
   );
 }
 
+const funcStyle = "color:green";
+let funcId = 0;
 function FuncComp(props) {
   const numberState = useState(props.initNumber);
   const number = numberState[0];
@@ -18,7 +20,57 @@ function FuncComp(props) {
 
   const [_date, setDate] = useState(new Date().toString());
 
-  console.log(new Date());
+  useEffect(function () {
+    console.log("%cfunc => effect (componentDidMount) " + ++funcId, funcStyle);
+    document.title = number;
+    return function () {
+      console.log(
+        "%cfunc => return (componentWillUnMount)" + ++funcId,
+        funcStyle
+      );
+    };
+  }, []);
+
+  useEffect(
+    function () {
+      console.log(
+        "%cfunc => effect number (componentDidMount & componentDidUpdate) " +
+          ++funcId,
+        funcStyle
+      );
+      document.title = number;
+      return function () {
+        console.log(
+          "%cfunc => return number (componentDidMount & componentDidUpdate) " +
+            ++funcId,
+          funcStyle
+        );
+      };
+    },
+    [number]
+  );
+
+  useEffect(
+    function () {
+      console.log(
+        "%cfunc => effect _date (componentDidMount & componentDidUpdate) " +
+          ++funcId,
+        funcStyle
+      );
+      document.title = number;
+      return function () {
+        console.log(
+          "%cfunc => return _date (componentDidMount & componentDidUpdate) " +
+            ++funcId,
+          funcStyle
+        );
+      };
+    },
+    [_date]
+  );
+
+  console.log("%cfunc => rander " + ++funcId, funcStyle);
+
   return (
     <div className="container">
       <h2>function style component</h2>
@@ -56,7 +108,7 @@ class ClassComp extends React.Component {
     console.log("%cclass => componentDidMount", classStyle);
   }
   shouldComponentUpdate(nextPorps, nextState) {
-    console.log("%class => shoudComponetUpdate", classStyle);
+    console.log("%cclass => shoudComponetUpdate", classStyle);
     return true;
   }
   componentWillUpdate(nextPorps, nextState) {
