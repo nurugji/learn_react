@@ -16,12 +16,9 @@ function FuncComp(props) {
   const number = numberState[0];
   const setNumber = numberState[1];
 
-  // const dateState = useState(new Date().toString());
-  // const _date = dateState[0];
-  // const setDate = dateState[1];
-
   const [_date, setDate] = useState(new Date().toString());
-  console.log(numberState);
+
+  console.log(new Date());
   return (
     <div className="container">
       <h2>function style component</h2>
@@ -46,12 +43,30 @@ function FuncComp(props) {
   );
 }
 
+const classStyle = "color:red";
 class ClassComp extends React.Component {
   state = {
     number: this.props.initNumber,
     date: new Date().toString(),
   };
+  componentWillMount() {
+    console.log("%cclass => componentWillMount", classStyle);
+  }
+  componentDidMount() {
+    console.log("%cclass => componentDidMount", classStyle);
+  }
+  shouldComponentUpdate(nextPorps, nextState) {
+    console.log("%class => shoudComponetUpdate", classStyle);
+    return true;
+  }
+  componentWillUpdate(nextPorps, nextState) {
+    console.log("%cclass => coponentWillUpdate", classStyle);
+  }
+  componentDidUpdate(nextPorps, nextState) {
+    console.log("%cclass => componentDidUpdate", classStyle);
+  }
   render() {
+    console.log("%cclass => render", classStyle);
     return (
       <div className="container">
         <h2>class style component</h2>
@@ -62,6 +77,7 @@ class ClassComp extends React.Component {
           type="button"
           value="random"
           onClick={function () {
+            console.log("onclick!");
             this.setState({
               number: Math.random(),
             });
